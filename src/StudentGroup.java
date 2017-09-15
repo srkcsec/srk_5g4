@@ -90,6 +90,13 @@ public class StudentGroup implements StudentArrayOperation {
 	public void add(Student student, int index) {
 		// Add your implementation here
 		StudentGroup.requireNonNull(student);
+		
+		/* Student[] newArray = null;
+		if (size == 0)
+			newArray = new Student[size + 1];
+		else
+			StudentGroup.rangeCheck(students, index); */
+		
 		StudentGroup.rangeCheck(students, index);
 		
 		Student[] newArray = new Student[size + 1];
@@ -301,9 +308,7 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getStudentsWithMaxAvgMark() {
 		// Add your implementation here
-		Arrays.sort(students, (s1, s2) -> {
-			return Double.valueOf(s1.getAvgMark()).compareTo(Double.valueOf(s2.getAvgMark()));
-		});
+		Arrays.sort(students, (s1, s2) -> Double.compare(s1.getAvgMark(), s2.getAvgMark()));
 		
 		List<Student> list = new ArrayList<>();
 		
