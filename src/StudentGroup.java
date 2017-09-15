@@ -331,7 +331,7 @@ public class StudentGroup implements StudentArrayOperation {
 		for (int i = 0, size = students.length-1; i < size; i++)
 			if (student.equals(students[i]))
 				return students[i + 1];
-		return null;
+		return student;
 	}
 	
 	// Objects require non-null
