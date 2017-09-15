@@ -263,7 +263,7 @@ public class StudentGroup implements StudentArrayOperation {
 		List<Student> list = new ArrayList<>();
 		
 		for (int i = 0, size = students.length; i < size; i++) {
-			if (students[i].getBirthDate().equals(date)) {
+			if (students[i].getBirthDate().equals(date) || students[i].getBirthDate().equals(daysAfterDate)) {
 				list.add(students[i]);
 			} else if (students[i].getBirthDate().after(date) && students[i].getBirthDate().before(daysAfterDate)) {
 				list.add(students[i]);
@@ -308,13 +308,13 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getStudentsWithMaxAvgMark() {
 		// Add your implementation here
-		Student[] students = new Student[size];
-		System.arraycopy(this.students, 0, students, 0, size);
+		Student[] students = new Student[this.students.length];
+		System.arraycopy(this.students, 0, students, 0, this.students.length);
 		Arrays.sort(students, (s1, s2) -> Double.compare(s1.getAvgMark(), s2.getAvgMark()));
 		
 		List<Student> list = new ArrayList<>();
 		
-		double maxAvg = students[size-1].getAvgMark();
+		double maxAvg = students[students.length-1].getAvgMark();
 
 		for (int i = students.length - 1; i > -1; i--)
 			if (maxAvg == students[i].getAvgMark())
