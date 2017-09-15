@@ -46,7 +46,6 @@ public class StudentGroup implements StudentArrayOperation {
 	public void setStudents(Student[] students) {
 		// Add your implementation here
 		StudentGroup.requireNonNull(students);
-		
 		for (this.size = 0; size < students.length && students[size] != null; size++);
 		
 		this.students = students;
@@ -70,7 +69,7 @@ public class StudentGroup implements StudentArrayOperation {
 
 	@Override
 	public void addFirst(Student student) {
-		// Add your implementation here		
+		// Add your implementation here
 		this.add(student, 0);
 	}
 
@@ -79,53 +78,40 @@ public class StudentGroup implements StudentArrayOperation {
 		// Add your implementation here
 		StudentGroup.requireNonNull(student);
 		
-		Student[] newArray = new Student[size + 1];		
-		System.arraycopy(students, 0, newArray, 0, size);
-		newArray[size] = student;size++;
-
-		students = newArray;	
+		if (size == students.length) {
+			students[size - 1] = student;
+		} else {
+			students[size] = student;
+			size++;
+		}	
 	}
 
 	@Override
 	public void add(Student student, int index) {
 		// Add your implementation here
 		StudentGroup.requireNonNull(student);
+		StudentGroup.rangeCheck(students, index);	
+
+		for (int i = size - 1; i > index; i--) {
+			students[i] = students[i - 1];
+		}	
 		
-		/* Student[] newArray = null;
-		if (size == 0)
-			newArray = new Student[size + 1];
-		else
-			StudentGroup.rangeCheck(students, index); */
-		
-		StudentGroup.rangeCheck(students, index);
-		
-		Student[] newArray = new Student[size + 1];
-		
-		System.arraycopy(this.students, 0, newArray, 0, index);
-		System.arraycopy(this.students, index, newArray, index + 1, size - index);
-		newArray[index] = student;
-		
-		students = newArray;size++;
+		size++;
+		students[index] = student;
 	}
 
 	@Override
 	public void remove(int index) {
 		// Add your implementation here
-		StudentGroup.rangeCheck(students, index);
-		
-		Student[] newArray = new Student[size - 1];
-		
-		if (index == 0)
-			System.arraycopy(students, 1, newArray, 0, students.length-1);
-		else if (index == students.length-1)
-			System.arraycopy(students, 0, newArray, 0, students.length-1);
-		else {
-			System.arraycopy(students, 0, newArray, 0, index);
-			System.arraycopy(students, index + 1, newArray, index, students.length-1 - index);
-		}	
-		/* for (int i = index, size = students.length; i < size; i++)
-			students[i] = students[i + 1]; */
-		students = newArray;size--;
+		if (index == students.length - 1) {
+			students[index] = null;
+		} else {
+			for (int i = index, length = size-1; i < length; i++)
+				students[i] = students[i + 1];
+			
+			students[size - 1] = null;
+			size--;
+		}
 	}
 
 	@Override
@@ -148,10 +134,9 @@ public class StudentGroup implements StudentArrayOperation {
 		// Add your implementation here
 		StudentGroup.rangeCheck(students, index);
 		
-		Student[] newArray = new Student[index + 1];
-		System.arraycopy(students, 0, newArray, 0, index + 1);
-		
-		students = newArray;size = index + 1;
+		for (int i = index + 1; i < size; i++)
+			students[i] = null;
+		size = index + 1;
 	}
 
 	@Override
@@ -160,7 +145,7 @@ public class StudentGroup implements StudentArrayOperation {
 		StudentGroup.requireNonNull(student);
 		
 		for (int i = 0, size = students.length; i < size; i++) {
-			if (students[i].getId() == student.getId()) {
+			if (students[i].equals(student)) {
 				removeFromIndex(i);
 				return;
 			}
@@ -172,13 +157,9 @@ public class StudentGroup implements StudentArrayOperation {
 		// Add your implementation here
 		StudentGroup.rangeCheck(students, index);
 		
-		if (index == 0)
-			return;
-		
-		Student[] newArray = new Student[size - index];
-		System.arraycopy(students, index, newArray, 0, size - index);
-		
-		students = newArray;size = size - index;
+		for (int i = 0; i < index; i++)
+			students[i] = null;
+		size = index + 1;
 	}
 
 	@Override
@@ -263,7 +244,7 @@ public class StudentGroup implements StudentArrayOperation {
 		List<Student> list = new ArrayList<>();
 		
 		for (int i = 0, size = students.length; i < size; i++) {
-			if (students[i].getBirthDate().equals(date) || students[i].getBirthDate().equals(daysAfterDate)) {
+			if (students[i].getBirthDate().equals(date)) {
 				list.add(students[i]);
 			} else if (students[i].getBirthDate().after(date) && students[i].getBirthDate().before(daysAfterDate)) {
 				list.add(students[i]);
@@ -308,9 +289,9 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getStudentsWithMaxAvgMark() {
 		// Add your implementation here
-		Student[] students = new Student[this.students.length];
-		System.arraycopy(this.students, 0, students, 0, this.students.length);
-		Arrays.sort(students, (s1, s2) -> Double.compare(s1.getAvgMark(), s2.getAvgMark()));
+		Arrays.sort(students, (s1, s2) -> {
+			return Double.valueOf(s1.getAvgMark()).compareTo(Double.valueOf(s2.getAvgMark()));
+		});
 		
 		List<Student> list = new ArrayList<>();
 		
