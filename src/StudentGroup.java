@@ -90,16 +90,9 @@ public class StudentGroup implements StudentArrayOperation {
 	public void add(Student student, int index) {
 		// Add your implementation here
 		StudentGroup.requireNonNull(student);
+		StudentGroup.rangeCheck(students, index);
 		
-		Student[] newArray = null;
-		if (size == 0)
-			newArray = new Student[size + 1];
-		else
-			StudentGroup.rangeCheck(students, index);
-		
-		//StudentGroup.rangeCheck(students, index);
-		
-		//Student[] newArray = new Student[size + 1];
+		Student[] newArray = new Student[size + 1];
 		
 		System.arraycopy(this.students, 0, newArray, 0, index);
 		System.arraycopy(this.students, index, newArray, index + 1, size - index);
