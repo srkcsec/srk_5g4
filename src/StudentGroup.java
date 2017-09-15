@@ -308,13 +308,13 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getStudentsWithMaxAvgMark() {
 		// Add your implementation here
-		Student[] students = new Student[this.students.length];
-		System.arraycopy(this.students, 0, students, 0, this.students.length);
+		Student[] students = new Student[size];
+		System.arraycopy(this.students, 0, students, 0, size);
 		Arrays.sort(students, (s1, s2) -> Double.compare(s1.getAvgMark(), s2.getAvgMark()));
 		
 		List<Student> list = new ArrayList<>();
 		
-		double maxAvg = students[students.length-1].getAvgMark();
+		double maxAvg = students[size-1].getAvgMark();
 
 		for (int i = students.length - 1; i > -1; i--)
 			if (maxAvg == students[i].getAvgMark())
