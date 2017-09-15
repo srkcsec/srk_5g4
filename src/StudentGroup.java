@@ -308,6 +308,8 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getStudentsWithMaxAvgMark() {
 		// Add your implementation here
+		Student[] students = new Student[this.students.length];
+		System.arraycopy(this.students, 0, students, 0, this.students.length);
 		Arrays.sort(students, (s1, s2) -> Double.compare(s1.getAvgMark(), s2.getAvgMark()));
 		
 		List<Student> list = new ArrayList<>();
